@@ -148,7 +148,7 @@ Berikut merupakan tahapan-tahapan dalam melakukan persiapan data:
   Tabel 2. Pergantian nama fitur ratings.
 
   | Sebelum        | Sesudah |
-                                                                                                                    |----------------|---------|
+  |----------------|---------|
   | Title          | title   |
   | User_id        | userId  |
   | review/score   | score   |
@@ -157,7 +157,7 @@ Berikut merupakan tahapan-tahapan dalam melakukan persiapan data:
   Tabel 3. Pergantian nama fitur books.
 
   | Sebelum        | Sesudah |
-                                                                                                                      |----------------|---------|
+  |----------------|---------|
   | Title          | title   |
 
 * **Persiapan data untuk Content Based Filtering**
@@ -168,7 +168,7 @@ Berikut merupakan tahapan-tahapan dalam melakukan persiapan data:
       Tabel 4. Missing Value Books.
 
       | Fitur          | Jumlah _Missing Value_ |
-                                                                                                                                                                                                                                                                                                                                        |----------------|------------------------|
+      |----------------|------------------------|
       | `title`        | 1                      |
       | `authors`      | 31413                  |
       | `categories`   | 41199                  |
@@ -194,7 +194,7 @@ Berikut merupakan tahapan-tahapan dalam melakukan persiapan data:
     * **Menangani missing value**, untuk mendeteksi missing value digunakan isna().sum() pada data rating_books.
 
       | Fitur          | Jumlah _Missing Value_ |
-                                                                                                                                                                                                                                                                                                                                              |----------------|------------------------|
+      |----------------|------------------------|
       | `title`        | 0                      |
       | `authors`      | 0                      |
       | `categories`   | 0                      |
@@ -225,7 +225,7 @@ Berikut merupakan tahapan-tahapan dalam melakukan persiapan data:
       maka data siap dikonsumsi model.
 
       | Jumlah Total Data | Jumlah Data Latih | Jumlah Data Validation |
-                                    |-------------------|-------------------|------------------------|
+      |-------------------|-------------------|------------------------|
       | 211477            | 126886            | 84591                  |
 
 ## Modeling
@@ -258,13 +258,13 @@ Berikut hasil uji coba dari langkah-langkah tersebut:
 * Judul untuk uji coba yaitu "The dark on the other side", dengan detail sebagai berikut:
 
   | title                      | categories           | authors               | ratingCounts |  
-                                                                |----------------------------|----------------------|-----------------------|--------------|
+  |----------------------------|----------------------|-----------------------|--------------|
   | The dark on the other side | ['Juvenile Fiction'] | ['Joan Lowery Nixon'] | 2.0          |
 
 * 10 hasil rekomendasi:
 
 | title                              | categories           | authors                                        | ratingCounts |  
-      |------------------------------------|----------------------|------------------------------------------------|--------------|
+|------------------------------------|----------------------|------------------------------------------------|--------------|
 | Which Witch?                       | ['Juvenile Fiction'] | ['Eva Ibbotson']                               | 1.0          |
 | The alphabet book                  | ['Juvenile Fiction'] | ['Philip D. Eastman']                          | 4.0          |
 | The Man in the Moon                | ['Juvenile Fiction'] | ['William Joyce']                              | 17.0         |
@@ -298,7 +298,7 @@ Berikut hasil dari collaborative filtering:
 * Buku yang diberikan rating oleh pengguna:
 
   | Title                                           | Categories           |
-                          |-------------------------------------------------|----------------------|
+  |-------------------------------------------------|----------------------|
   | The Long Dark Tea-Time of the Soul              | ['Fiction']          |
   | The Importance of Being Earnest and Other Plays | ['Drama']            |
   | Lion, the Witch, and the Wardrobe               | ['Fiction']          |
@@ -313,7 +313,7 @@ Berikut hasil dari collaborative filtering:
 * 20 hasil rekomendasi:
 
   | Title                                                                              | Categories                    |
-                    |------------------------------------------------------------------------------------|-------------------------------|
+  |------------------------------------------------------------------------------------|-------------------------------|
   | Jane Eyre (New Windmill)                                                           | ['Charity-schools']           |
   | When We Were Very Young                                                            | ["Children's poetry"]         |
   | Pride and Prejudice                                                                | ['Fiction']                   |
@@ -356,7 +356,7 @@ Langkah evaluasi yang dilakukan ada beberapa tahap:
 * Terakhir, mencetak hasil evaluasinya. Berikut hasilnya:
 
   | Nilai Precision@k |
-                    |-------------------|
+  |-------------------|
   | 100.0             |
   | 60.0              |
   | 100.0             |
