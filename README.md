@@ -34,6 +34,9 @@ pengguna menemukan buku-buku yang sesuai preferensi mereka.
 
 ---
 
+$$\\text{cosine\\_similarity}(A, B) = \\frac{A \\cdot B}{||A||_2 \\times ||B||_2}$$
+
+
 ### Problem Statements
 
 - Bagaimana cara membuat sistem rekomendasi berdasarkan categories?
