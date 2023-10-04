@@ -8,7 +8,7 @@
 
 ##### Latar Belakang
 
-![Amazon Book Shop](https://media.npr.org/assets/img/2022/03/03/-1-5f6784a71de8a1134319e75a8e5a9587f3200ede.jpg)
+![Amazon Book Shop](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Amazon_Books_logo.svg/2560px-Amazon_Books_logo.svg.png)
 
 Amazon, sebagai salah satu perusahaan terbesar di dunia telah mengubah cara berbelanja dan berinteraksi dengan
 produk. Dengan beroperasi dalam berbagai bidang, termasuk
