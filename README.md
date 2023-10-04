@@ -8,9 +8,9 @@
 
 ##### Latar Belakang
 
-![Amazon Book Shop](https://cdn.vox-cdn.com/thumbor/eJf1GrHZ6FRolB1CeblI9uGJe4E=/0x0:1304x666/1304x666/filters:focal(652x333:653x334)/cdn.vox-cdn.com/uploads/chorus_asset/file/22278803/Screen_Shot_2021_02_03_at_12.34.41_PM.png)
+![Amazon Book Shop](https://media.npr.org/assets/img/2022/03/03/-1-5f6784a71de8a1134319e75a8e5a9587f3200ede.jpg)
 
-Amazon, sebagai salah satu perusahaan terbesar di dunia telah mengubah cara kita berbelanja dan berinteraksi dengan
+Amazon, sebagai salah satu perusahaan terbesar di dunia telah mengubah cara berbelanja dan berinteraksi dengan
 produk. Dengan beroperasi dalam berbagai bidang, termasuk
 _e-commerce_ [[1]](https://www.aboutamazon.com/news/operations/the-faces-of-amazon-operations). Amazon memiliki banyak
 produk, termasuk buku yang menjadi salah satu kategori produk paling populer di platform mereka. Dengan jutaan judul
@@ -34,25 +34,28 @@ pengguna menemukan buku-buku yang sesuai preferensi mereka.
 
 ---
 
-$$\\text{cosine\\_similarity}(A, B) = \\frac{A \\cdot B}{||A||_2 \\times ||B||_2}$$
-
-
 ### Problem Statements
 
-- Bagaimana cara membuat sistem rekomendasi berdasarkan categories?
-- Bagaimana cara membuat sistem rekomendasi dari data ulasan dan rating buku sehingga dapat memberikan rekomendasi buku
-  yang sesuai dengan minat dan belum pernah dibaca oleh _user_?
+- Bagaimana cara melakukan pra-pemrosesan pada data books dan rating yang akan digunakan untuk membuat sistem
+  rekomendasi?
+- Bagaimana cara membuat sebuah sistem rekomendasi buku yang dapat memberikan rekomendasi kepada pengguna
+  berdasarkan kategori buku yang spesifik dengan mempertimbangkan minat pengguna dalam kategori tertentu?
+- Bagaimana cara mengembangkan sistem rekomendasi buku yang dapat memberikan rekomendasi berdasarkan ulasan dan rating
+  pengguna, dengan memastikan bahwa buku yang direkomendasikan belum pernah dibaca oleh pengguna?
 
 ### Goals
 
-- Untuk membuat sistem rekomendasi buku berdasarkan categories.
-- Untuk membuat sistem rekomendasi buku yang sesuai dengan minat dan belum pernah dibaca oleh _user_.
+- Melakukan pra-pemrosesan dengan baik agar dapat digunakan dalam pembuatan sistem rekomendasi.
+- Mengetahui cara membuat sebuah sistem rekomendasi buku yang dapat memberikan rekomendasi kepada pengguna berdasarkan
+  kategori buku.
+- Mengetahui cara membuat sistem rekomendasi buku berdasarkan ulasan dan rating pengguna, dengan memastikan bahwa buku
+  yang direkomendasikan belum pernah dibaca oleh pengguna.
 
 ### Solution statements
 
 Solusi yang dapat dilakukan untuk memenuhi tujuan dari _project_ ini adalah sebagai berikut:
 
-* Menggunakan _Content Based Filtering_ & _Collaborative Filtering_.
+* Menggunakan **_Content Based Filtering_ & _Collaborative Filtering_**.
 * Untuk **Pra-Pemrosesan Data** dilakukan beberapa tahapan, diantaranya :
     * Menghapus fitur yang tidak digunakan pada books dan ratings.
     * Mengganti nama pada kolom books dan ratings
@@ -122,14 +125,18 @@ ___
 * Mengecek jumlah data unik kolom Title dan User_id pada data ratings, berikut visualisasi-nya:
 
   Gambar 1. Judul dan User Unik pada ratings
+
   ![Judul dan Kategori Unik pada Books](https://github.com/aldisusanto/video/blob/main/gambar/userUnique.png?raw=true)
+
   Berdasarkan gambar diatas terdapat 212404 judul yang unik dan 1008973 user yang unik.
 
 
 * Mengecek jumlah data unik kolom Title dan categories pada data books, berikut visualisasi-nya:
 
   Gambar 2. Judul dan Kategori Unik pada books
+
   ![Judul dan Kategori Unik pada Books](https://github.com/aldisusanto/video/blob/main/gambar/book_unique.png?raw=true)
+
   Berdasarkan gambar diatas terdapat 212404 judul yang unik dan 10884 user yang unik.
 
 ![]()
@@ -170,7 +177,7 @@ Berikut merupakan tahapan-tahapan dalam melakukan persiapan data:
 
       Tabel 4. Missing Value Books.
 
-      | Fitur          | Jumlah _Missing Value_ |
+      | Fitur          | Jumlah _Missing Value_ | 
       |----------------|------------------------|
       | `title`        | 1                      |
       | `authors`      | 31413                  |
@@ -178,7 +185,8 @@ Berikut merupakan tahapan-tahapan dalam melakukan persiapan data:
       | `ratingCounts` | 162652                 |
 
       Berdasakan table diatas, dilakukan penghapusan data yang kosong menggunakan fungsi 'dropna'. Sehingga sisa buku
-      sebanyak 47269 dari 212404.
+      sebanyak 47269 dari 212404. Penghapusan data dilakukan karena data tersebut dapat menyebabkan ketidak-konsistensi
+      dalam analisis dan permodelan, serta mempercepat proses analisis dan pemodelan.
 
 
 * **Extraction fitur menggunakan TfidfVectorizer**.
@@ -196,7 +204,7 @@ Berikut merupakan tahapan-tahapan dalam melakukan persiapan data:
       rating_books dengan nilai baris **1.549.923**.
     * **Menangani missing value**, untuk mendeteksi missing value digunakan isna().sum() pada data rating_books.
 
-      | Fitur          | Jumlah _Missing Value_ |
+      | Fitur          | Jumlah _Missing Value_ | 
       |----------------|------------------------|
       | `title`        | 0                      |
       | `authors`      | 0                      |
@@ -246,17 +254,25 @@ ___
   dikenal.
 * **Kekurangannya**, terbatas dalam menghadirkan variasi karena hanya merekomendasikan item yang serupa dengan yang
   sudah dikenal oleh pengguna.
+* **Cara kerjanya**, dengan mengekstrak fitur dari item, kemudian mencocokkan item dengan kesamaan fitur.
 
-Langkah yang dilakukan, yaitu hasil extract fitur yang ditampung di dalam variable `tfidf_sparse_matrix` digunakan untuk
-menghitung **cosine_similarity**, lalu hasilnya akan ditampung didalam dataFrame dengan menggunakan `title` sebagai row
-dan colum. Terakhir, membuat fungsi anime_recommendations dengan beberapa parameter sebagai berikut:
+_Similarity measure_ yang digunakan adalah _Cosine Similarity_. Dimana teknik ini mengukur kesamaan yang bekerja dengan
+mengukur kesamaan antara dua vektor dan menentukan apakah kedua vektor tersebut menunjuk ke arah yang sama dengan
+menghitung sudut _cosinus_ antara dua vector. Semakin kecil sudut _cosinus_, semakin besar nilai _cosine similarity_.
+Fungsi _cosine similarity_ antara item A dan B adalah sebagai berikut:
 
-* `title` : judul buku.
-* `sim_df` : Dataframe mengenai similarity yang telah kita definisikan sebelumnya.
-* `items` : Nama dan fitur yang digunakan untuk mendefinisikan kemiripan.
-* `k` : Banyak rekomendasi yang ingin diberikan.
+$$\\text{cosine\\_similarity}(A, B) = \\frac{A \\cdot B}{||A||_2 \\times ||B||_2}$$
 
-Berikut hasil uji coba dari langkah-langkah tersebut:
+di mana:
+
+- $A$ dan $B$ adalah dua vektor yang ingin kita hitung kesamaannya.
+- $A \\cdot B$ adalah dot product (produk titik) dari $A$ dan $B$.
+- $||A||_2$ dan $||B||_2$ adalah norma L2 (atau panjang) dari vektor $A$ dan $B$, masing-masing.
+
+Jika kedua objek memiliki nilai similaritas 1, maka kedua objek dikatakan identik dan sebaliknya. Semakin besar hasil
+dari fungsi similarity, maka kedua objek yang dievaluasi dianggap semakin mirip dan sebaliknya.
+
+Berikut hasil uji coba menggunakan teknik _cosine similarity_:
 
 * Judul untuk uji coba yaitu "The dark on the other side", dengan detail sebagai berikut:
 
@@ -266,18 +282,18 @@ Berikut hasil uji coba dari langkah-langkah tersebut:
 
 * 10 hasil rekomendasi:
 
-| title                              | categories           | authors                                        | ratingCounts |  
-|------------------------------------|----------------------|------------------------------------------------|--------------|
-| Which Witch?                       | ['Juvenile Fiction'] | ['Eva Ibbotson']                               | 1.0          |
-| The alphabet book                  | ['Juvenile Fiction'] | ['Philip D. Eastman']                          | 4.0          |
-| The Man in the Moon                | ['Juvenile Fiction'] | ['William Joyce']                              | 17.0         |
-| REM WORLD                          | ['Juvenile Fiction'] | ['Rodman Philbrick']                           | 2.0          |
-| Shaoey And Dot: Bug Meets Bundle   | ['Juvenile Fiction'] | ['Mary Beth Chapman', 'Steven Curtis Chapman'] | 1.0          |
-| Dragonslayers                      | ['Juvenile Fiction'] | ['Bruce Coville']                              | 3.0          |
-| Wordles                            | ['Juvenile Fiction'] | ['Amy Krouse Rosenthal']                       | 2.0          |
-| Little Bears Friend                | ['Juvenile Fiction'] | ['Else Holmelund Minarik']                     | 5.0          |
-| The Watsons Go to Birmingham: 1963 | ['Juvenile Fiction'] | ['Else Holmelund Minarik']                     | 7.0          |
-| Auntie Claus                       | ['Juvenile Fiction'] | ['Elise Primavera']                            | 8.0          |
+  | title                              | categories           | authors                                        | ratingCounts |  
+  |------------------------------------|----------------------|------------------------------------------------|--------------|
+  | Which Witch?                       | ['Juvenile Fiction'] | ['Eva Ibbotson']                               | 1.0          |
+  | The alphabet book                  | ['Juvenile Fiction'] | ['Philip D. Eastman']                          | 4.0          |
+  | The Man in the Moon                | ['Juvenile Fiction'] | ['William Joyce']                              | 17.0         |
+  | REM WORLD                          | ['Juvenile Fiction'] | ['Rodman Philbrick']                           | 2.0          |
+  | Shaoey And Dot: Bug Meets Bundle   | ['Juvenile Fiction'] | ['Mary Beth Chapman', 'Steven Curtis Chapman'] | 1.0          |
+  | Dragonslayers                      | ['Juvenile Fiction'] | ['Bruce Coville']                              | 3.0          |
+  | Wordles                            | ['Juvenile Fiction'] | ['Amy Krouse Rosenthal']                       | 2.0          |
+  | Little Bears Friend                | ['Juvenile Fiction'] | ['Else Holmelund Minarik']                     | 5.0          |
+  | The Watsons Go to Birmingham: 1963 | ['Juvenile Fiction'] | ['Else Holmelund Minarik']                     | 7.0          |
+  | Auntie Claus                       | ['Juvenile Fiction'] | ['Elise Primavera']                            | 8.0          |
 
 Berdasarkan hasil diatas, terlihat bahwa metode content based filtering hanya memberikan konten yang relevan.
 
@@ -289,12 +305,19 @@ ___
   memerlukan pengetahuan ekspplisit tentang konten item.
 * **Kekurangannya**, bergantung pada data perilaku pengguna, sehingga memerlukan jumlah pengguna yang cukup besar dan
   item yang cukup banyak untuk memberikan rekomendasi yang akurat.
+* **Cara Kerjanya**, mencari kesamaan antara pengguna atau item berdasarkan data perilaku, seperti score dan membuat
+  kesamaan ini untuk membuat rekomendasi yang sesuai.
 
-Langkah yang dilakukan, yaitu membuat Class ImprovedRecommenderNet, lalu menginisialisasi model menggunakan class tersebut
-dengan 6 parameter (num_user, num_book, dan embedding_size, dropout_rate, l1_strength, dan l2_strength). Selanjutnya melakukan compile model dengan menentukan
-fungsi loss (Binary Crossentropy), optimizer (Adam), dan metrik (Root Mean Squared Error). Lalu melakukan fit dengan 10
-epoch.
-Terakhir melakukan prediction terhadap user yang random.
+Langkah kerja yang dilakukan, yaitu
+
+1. Membuat Class ImprovedRecommenderNet, dengan beberapa tambahan parameter, yaitu dropout untuk menghindari
+   overfitting, dan L1 dan L2 untuk mengendalikan kompleksitas pada model. Sehingga model ini dirancang untuk memberikan
+   rekomendasi yang lebih baik dan mengatasi overfitting.
+2. lalu menginisialisasi model menggunakan class tersebut dengan 6 parameter (num_user, num_book, dan embedding_size,
+   dropout_rate, l1_strength, dan l2_strength).
+3. Selanjutnya melakukan compile model dengan menentukan fungsi loss (Binary Crossentropy), optimizer (Adam), dan
+   metrik (Root Mean Squared Error). Lalu melakukan fit dengan 10 epoch.
+4. Terakhir melakukan prediction terhadap user yang random.
 
 Berikut hasil dari collaborative filtering:
 
@@ -350,7 +373,16 @@ Filtering dan menggunakan "RMSE" untuk Collaborative Filltering.
 ### Content Based Filltering.
 
 ___
-Langkah evaluasi yang dilakukan ada beberapa tahap:
+Untuk evaluasi _Content Based Filtering_ yang digunakan adalah precision@k.
+
+Precision@k adalah metrik evaluasi yang digunakan untuk mengukur seberapa baik model dalam memberikan K rekomendasi atau
+hasil teratas yang relevan.
+
+Rumus untuk menghitung precision@k adalah sebagai berikut:
+
+$$Precision@K = \\frac{\\text{Jumlah item relevan dalam K item teratas}}{K}$$
+
+Langkah tersebut dilakukan dalam beberapa tahap:
 
 * Menghitung presisi pada k peringkat teratas dalam hasil rekomendasi.
 * Kemudian, mengambil sample buku.
@@ -379,7 +411,21 @@ preferensi kategori buku yang sesuai dengan pengguna.
 
 ___
 
-Langkah evaluasi yang dilakukan yaitu mencetak RMSE train dan validation pada sebuah plot. Berikut hasilnya:
+_Metric_ yang digunakan untuk mengevaluasi model adalah RMSE (_Root Mean Squared Error_). RMSE menghitung akar dari
+rata-rata selisih kuadrat antara nilai prediksi dan nilai aktual. Nilai RMSE yang kecil menunjukkan performa model yang
+lebih baik dan akurat.
+
+Rumus untuk menghitung RMSE adalah sebagai berikut:
+
+$$RMSE = \\sqrt{\\frac{1}{n}\\sum_{i=1}^{n}(y_i - \\hat{y}_i)^2}$$
+
+di mana:
+
+- $y_i$ adalah nilai observasi aktual.
+- $\\hat{y}_i$ adalah nilai prediksi oleh model.
+- $n$ adalah jumlah total observasi atau titik data.
+
+Berikut visualisasi evaluasinya:
 
 ![Hasil Evaluasi Metric](https://github.com/aldisusanto/video/blob/main/gambar/3.png?raw=true)
 
@@ -405,4 +451,7 @@ Available: https://self-publishingschool.com/most-popular-book-genres-on-amazon/
 
 [3]    “Why Product Reviews Are Important for Amazon Sellers.” Accessed: Oct. 04, 2023. [Online].
 Available: https://www.junglescout.com/blog/importance-of-amazon-reviews/
+
+
+
 
